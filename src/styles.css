@@ -109,3 +109,14 @@ body{background:radial-gradient(circle at 10% 0%,rgba(112,101,255,.10),transpare
 .access-content{padding-top:70px}.access-intro{border-radius:34px;padding:38px;margin-bottom:18px}.access-intro h2{font:800 44px Manrope;letter-spacing:-.05em;margin:12px 0}.access-intro p{max-width:720px;color:#666872;line-height:1.75}.store-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.store-card-premium{border-radius:32px;padding:30px;display:flex;align-items:center;gap:18px;min-height:160px;transition:.4s}.store-card-premium:hover{transform:translateY(-8px) scale(1.01)}.store-card-premium .store-icon{width:62px;height:62px;border-radius:20px;display:grid;place-items:center;background:rgba(25,27,80,.08);font:800 26px Manrope}.store-card-premium small{display:block;color:#7a7c85;font:800 9px Manrope;letter-spacing:.1em}.store-card-premium strong{display:block;font:800 25px Manrope;margin-top:6px}.store-card-premium p{margin:5px 0 0;color:#777985;font-size:13px}.store-card-premium>svg{margin-left:auto}.access-info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.access-info-grid article{border-radius:28px;padding:28px;min-height:250px}.access-info-grid article h3{font:800 24px Manrope;letter-spacing:-.03em;margin:16px 0 10px}.access-info-grid article p{color:#686a73;line-height:1.7}
 @keyframes pulseGlow{0%,100%{transform:scale(.94);opacity:.72}50%{transform:scale(1.04);opacity:1}}
 @media(max-width:900px){.editorial-grid,.access-hero-grid{grid-template-columns:1fr}.store-grid,.access-info-grid{grid-template-columns:1fr}.access-logo-card{min-height:380px}.editorial-grid{gap:35px}}
+
+/* V11 polish — unified project visuals */
+.home-project:before,.home-project.orange:before,.home-project.violet:before,.home-project.blue:before{display:none!important}
+.home-project{background:linear-gradient(135deg,rgba(255,255,255,.34),rgba(255,255,255,.08));border-color:rgba(255,255,255,.58);backdrop-filter:blur(34px) saturate(155%);-webkit-backdrop-filter:blur(34px) saturate(155%);box-shadow:0 24px 70px rgba(24,28,48,.08),inset 0 1px rgba(255,255,255,.72);}
+.home-project:hover{border-color:rgba(255,255,255,.76);box-shadow:0 32px 85px rgba(24,28,48,.14),inset 0 1px rgba(255,255,255,.82)}
+.project-number{display:none!important}
+.kai-brand img,.project-row .kai-brand img{background:transparent!important;border-radius:0!important;padding:0!important;box-shadow:none!important}
+.access-brand img{background:transparent!important;border-radius:0!important;box-shadow:none!important}
+.project-brand small{display:none!important}
+.feature-facts span b{display:none!important}
+.feature-facts span{padding-left:0!important}
