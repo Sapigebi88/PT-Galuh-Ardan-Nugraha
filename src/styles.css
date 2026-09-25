@@ -208,3 +208,87 @@ footer{background:#152038}
 @media(max-width:900px){.experience-points{grid-template-columns:1fr}.service-grid{grid-template-columns:1fr 1fr}.welcome-modal{padding:38px 28px 28px}.water-a{left:-100px}.water-b{right:-120px}}
 @media(max-width:600px){.service-grid{grid-template-columns:1fr}.stat-row{padding:0 12px}.stat{padding:22px 10px}.stat:not(:first-child){padding-left:10px}.welcome-modal{border-radius:30px}.welcome-modal h2{font-size:38px}.welcome-bottom{align-items:flex-start;flex-direction:column}.welcome-bottom button{width:100%;justify-content:center}}
 .service-card h3{margin-top:12px}.service-card .service-index{display:none}
+
+/* V13 — unified blue liquid-glass redesign */
+:root{
+  --bg:#edf3fb;
+  --paper:#f8fbff;
+  --ink:#142238;
+  --muted:#64748b;
+  --line:rgba(55,78,112,.14);
+  --accent:#6f9fe8;
+  --violet:#8da7e8;
+  --blue:#6f9fe8;
+  --green:#79b8aa;
+  --shadow:0 30px 90px rgba(42,66,104,.12);
+}
+body{background:linear-gradient(180deg,#eef4fb 0%,#f6f9fc 48%,#edf3fa 100%);color:var(--ink)}
+/* One cohesive palette: icy blue, slate and soft lavender only. */
+.nav.solid{background:rgba(18,31,52,.88);backdrop-filter:blur(24px) saturate(145%);-webkit-backdrop-filter:blur(24px) saturate(145%)}
+.dot,.brand span:last-child span{color:#a9c8ff!important}
+.nav-links button:hover{color:#b8d0ff}
+.hero-vignette{background:linear-gradient(90deg,rgba(8,20,38,.84),rgba(12,28,52,.48) 52%,rgba(10,24,44,.18)),linear-gradient(0deg,rgba(7,18,34,.62),transparent 55%)!important}
+.hero-title h1 em{color:#bcd5ff!important}
+.moving-strip{background:#14243c;border-bottom-color:rgba(255,255,255,.12)}
+.kai-intro,.image-rail,.work,.editorial{background:transparent!important}
+.journey{background:linear-gradient(180deg,#e9f0f8,#f2f6fa)!important}
+.services{background:linear-gradient(145deg,#172b46,#203a5b)!important;color:#f6f9ff}
+.services .eyebrow{color:#a9c6eb!important}
+.services h2{color:#f7fbff!important}
+.service-grid{border-color:rgba(255,255,255,.16)!important;background:rgba(255,255,255,.035)!important;box-shadow:inset 0 1px rgba(255,255,255,.10),0 30px 90px rgba(12,31,56,.20)!important}
+.service-card{border-color:rgba(255,255,255,.12)!important;background:transparent!important}
+.service-card:hover{background:rgba(157,190,235,.08)!important}
+.service-card h3{color:#f4f8ff!important}
+.service-card p{color:#b7c6da!important}
+.service-card svg{display:none!important}
+.cta{background:linear-gradient(135deg,#729bd7 0%,#91a9dc 55%,#7e99d0 100%)!important;color:#112039!important}
+.cta .eyebrow{color:#29466e!important}.cta p{color:#263d60!important}
+.cta-orb,.cta-liquid{opacity:.22!important}
+.home-project,.glass-panel-xl,.glass-project,.glass-timeline,.glass-service,.rail-glass-card,.experience-point,.editorial-copy article,.stat-row{
+  background:linear-gradient(145deg,rgba(255,255,255,.66),rgba(232,241,252,.32))!important;
+  border-color:rgba(255,255,255,.80)!important;
+  box-shadow:0 28px 80px rgba(53,79,116,.10),inset 0 1px rgba(255,255,255,.95)!important;
+  backdrop-filter:blur(30px) saturate(145%)!important;
+  -webkit-backdrop-filter:blur(30px) saturate(145%)!important;
+}
+.home-project:hover{transform:translateY(-7px)!important;box-shadow:0 35px 95px rgba(53,79,116,.15),inset 0 1px rgba(255,255,255,.98)!important}
+.home-project:before,.home-project.orange:before,.home-project.violet:before,.home-project.blue:before{display:none!important}
+.home-project h3,.service-card h3{letter-spacing:-.045em}
+.home-project>span,.project-row .row-main>span{color:#71839d!important}
+.home-project p,.service-card p{color:#65758b!important}
+.home-project .project-corner,.row-arrow{color:#6388c3!important}
+.project-tags b{border-color:rgba(83,111,151,.20)!important;background:rgba(255,255,255,.28)!important;color:#61728b!important}
+.rail-glass-section{background:linear-gradient(180deg,#eaf1f8,#f5f8fb)!important}
+.rail-glass-card:after,.home-project:after,.service-card:after,.experience-point:after,.stat-row:after{background:radial-gradient(ellipse at 20% 12%,rgba(255,255,255,.60),transparent 28%),linear-gradient(115deg,transparent 20%,rgba(174,205,244,.16) 48%,transparent 70%)!important;filter:blur(10px);opacity:.65!important;animation:glassFlow 11s ease-in-out infinite alternate!important}
+/* Remove leftover decorative counters and chips. */
+.project-number,.service-index,.hero-index,.feature-facts,.stat-row{display:none!important}
+/* Welcome overlay: solid enough that the page behind cannot be read through it. */
+.welcome-overlay{background:rgba(8,18,33,.78)!important;backdrop-filter:blur(16px) saturate(110%)!important;-webkit-backdrop-filter:blur(16px) saturate(110%)!important}
+.welcome-overlay:before{background:radial-gradient(circle at 50% 40%,rgba(118,157,218,.18),transparent 34%),linear-gradient(135deg,rgba(255,255,255,.035),transparent 58%)!important}
+.welcome-modal{
+  width:min(590px,calc(100% - 32px));
+  padding:48px 48px 34px;
+  border-radius:34px;
+  border:1px solid rgba(202,222,250,.34)!important;
+  background:linear-gradient(145deg,#203a5c 0%,#172d49 58%,#203858 100%)!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+  box-shadow:0 50px 130px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.22),inset 0 -1px rgba(0,0,0,.20)!important;
+}
+.welcome-modal:before{background:radial-gradient(circle at 22% 5%,rgba(219,235,255,.24),transparent 34%)!important;opacity:1}
+.welcome-modal:after{background:linear-gradient(120deg,rgba(255,255,255,.10),transparent 30%,transparent 70%,rgba(135,176,238,.10))!important;mix-blend-mode:normal!important}
+.welcome-orb{background:linear-gradient(145deg,#9dbff0,#587fb6)!important;border-color:rgba(224,239,255,.42)!important;box-shadow:inset 7px 6px 16px rgba(255,255,255,.30),inset -9px -9px 22px rgba(19,39,70,.35),0 22px 48px rgba(8,20,40,.28)!important}
+.welcome-orb span{color:#f6fbff!important}
+.welcome-kicker{color:#b9cee9!important}
+.welcome-modal h2{color:#f6f9ff!important}
+.welcome-modal p{color:#c3d0e1!important}
+.welcome-divider{background:rgba(255,255,255,.15)!important}
+.welcome-bottom>span{color:#aebfd4!important}
+.welcome-bottom button{background:#f4f8ff!important;color:#1c3455!important}
+.welcome-close{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.24)!important;color:#f3f7ff!important}
+.welcome-water{background:linear-gradient(145deg,rgba(144,181,232,.18),rgba(73,110,165,.08))!important;border-color:rgba(190,215,247,.18)!important}
+.welcome-glow{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(115,157,220,.18),transparent 68%);filter:blur(18px);pointer-events:none;animation:float 9s ease-in-out infinite}
+.footer-right{color:#65758b!important}
+footer{background:#dfe8f3!important;border-top:1px solid rgba(71,96,132,.10)!important}
+/* Remove visual clutter from cards while keeping useful navigation arrows. */
+.service-card:after{display:none!important}
+@media(max-width:700px){.welcome-modal{padding:38px 26px 28px;border-radius:28px}.welcome-modal h2{font-size:36px}.welcome-bottom{flex-direction:column;align-items:stretch}.welcome-bottom button{justify-content:center}.welcome-glow{width:260px;height:260px}}
