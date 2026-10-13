@@ -10,6 +10,33 @@ import hero5 from './gallery/hd/hero5.jpg';
 import kaiLogo from './gallery/kai-logo-hd.png';
 import accessLogo from './gallery/access-logo.png';
 
+import photoPanoramic from './gallery/aluqman/panoramic-inside.jpg';
+import photoPlatform from './gallery/aluqman/commuter-platform.jpg';
+import photoCurves from './gallery/aluqman/commuter-curves.jpg';
+import photoBridgeJourney from './gallery/aluqman/bridge-journey.jpg';
+import photoBatavia from './gallery/aluqman/batavia-kalimenur.jpg';
+import photoProgo from './gallery/aluqman/progo-kalimenur.jpg';
+import photoReflection from './gallery/aluqman/railway-reflection.jpg';
+import photoArgo from './gallery/aluqman/argo-wilis-panoramic.jpg';
+import photoBridge from './gallery/aluqman/bridge-landscape.jpg';
+import photoNusantara from './gallery/aluqman/nusantara-explorer.jpg';
+
+const CREDIT_URL='https://www.instagram.com/aluqman_bj1/';
+const CREDIT_NAME='@aluqman_bj1';
+const PHOTO_GALLERY=[
+ {src:photoPanoramic,title:'Suasana di dalam kereta panoramic',category:'Di dalam kereta',description:'Potret suasana kabin kereta panoramic.'},
+ {src:photoPlatform,title:'KRL di area stasiun',category:'KRL & Commuter',description:'Kereta commuter berhenti di peron.'},
+ {src:photoCurves,title:'Rangkaian commuter di jalur lengkung',category:'KRL & Commuter',description:'Rangkaian KRL melintas di jalur dengan banyak wesel.'},
+ {src:photoBridgeJourney,title:'Perjalanan melintasi jembatan',category:'Panorama',description:'Kereta melintasi jembatan di tengah lanskap hijau.'},
+ {src:photoBatavia,title:'KA Batavia di Kalimenur',category:'Kereta antarkota',description:'KA Batavia menuju Yogyakarta melintas di Letter S Kalimenur, Kulonprogo.'},
+ {src:photoProgo,title:'KA Progo di Kalimenur',category:'Kereta antarkota',description:'Potret KA Progo di sekitar bekas Halte Kalimenur.'},
+ {src:photoReflection,title:'Cerita di sepanjang rel',category:'Panorama',description:'Kereta dan lanskap dalam suasana yang tenang.'},
+ {src:photoArgo,title:'Argo Wilis dan Panoramic',category:'Kereta antarkota',description:'Potret pertemuan dua rangkaian kereta kelas premium.'},
+ {src:photoBridge,title:'Jembatan dan perjalanan',category:'Panorama',description:'Jembatan kereta yang menghubungkan lanskap dan perjalanan.'},
+ {src:photoNusantara,title:'The Nusantara Explorer',category:'Kereta antarkota',description:'Rangkaian perjalanan dari Gambir menuju Bandung.'}
+];
+
+
 const RAIL_IMAGES=[hero1,hero2,hero3,hero4,hero5];
 const G={
  id:{heroSlides:['Galuh Ardan','Indonesia by rail.','Perjalanan. Desain. Cerita.','Dari Bandung, melangkah jauh.','Cerita personal di atas rel.'],gallery:'GALERI KERETA',galleryTitle:'Indonesia, dilihat dari jalur rel.',galleryText:'Foto-foto kereta Indonesia yang menjadi bagian dari visual diary dan inspirasi portfolio ini.',railJournal:'RAILWAY VISUAL JOURNAL',railPhoto:['Jawa · Panorama','KAI · Railway','KAI · Journey','Di dalam kereta','Whoosh · Indonesia'],featureCaption:'PERJALANAN KERETA INDONESIA',featureLine:'Perjalanan adalah cerita.',contactStatus:'TERSEDIA UNTUK TERHUBUNG · BANDUNG · INDONESIA'},
@@ -40,7 +67,7 @@ const T={
 };
 
 
-function pageFromHash(){const h=location.hash.slice(1); if(h.startsWith('project/')) return h; return ['home','about','projects','contact','access'].includes(h)?h:'home'}
+function pageFromHash(){const h=location.hash.slice(1); if(h.startsWith('project/')) return h; return ['home','about','projects','contact','access','gallery'].includes(h)?h:'home'}
 function openProject(p,go){ if(p.id==='access'){go('access');return;} if(p.url) window.open(p.url,'_blank','noopener,noreferrer'); }
 function useReveal(key){useEffect(()=>{const els=[...document.querySelectorAll('[data-reveal]')]; els.forEach((e,i)=>{e.style.setProperty('--delay',`${Math.min(i*65,420)}ms`); e.classList.remove('visible')}); requestAnimationFrame(()=>els.forEach(e=>e.classList.add('ready'))); const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.1}); els.forEach(e=>io.observe(e)); return()=>io.disconnect()},[key])}
 
@@ -60,14 +87,15 @@ function App(){
    <div className={'nav-group '+(openNav==='work'?'expanded':'')}><button className="nav-group-trigger" onClick={()=>setOpenNav(openNav==='work'?'':'work')}>{lang==='id'?'Produk & Layanan':lang==='zh'?'产品与服务':lang==='ja'?'製品・サービス':'Products & Services'}<ChevronRight size={14}/></button>{openNav==='work'&&<div className="nav-dropdown"><button onClick={()=>go('projects')}>{lang==='id'?'Semua Layanan':'All Services'}<small>{lang==='id'?'Layanan dan solusi perusahaan':'Company services and solutions'}</small></button><button onClick={()=>{go('project/bookingkai');setOpenNav('')}}>BookingKAI<small>{lang==='id'?'Layanan pemesanan perjalanan':'Travel booking service'}</small></button><button onClick={()=>go('access')}>Access by Galuh<small>{lang==='id'?'Layanan aplikasi digital':'Digital application service'}</small></button><button onClick={()=>{window.open('https://ibox.co.id/','_blank','noopener,noreferrer');setOpenNav('')}}>Galuh Apple Store<small>iBox</small></button></div>}</div>
    <div className={'nav-group '+(openNav==='explore'?'expanded':'')}><button className="nav-group-trigger" onClick={()=>setOpenNav(openNav==='explore'?'':'explore')}>{lang==='id'?'Keberlanjutan':lang==='zh'?'可持续发展':lang==='ja'?'サステナビリティ':'Sustainability'}<ChevronRight size={14}/></button>{openNav==='explore'&&<div className="nav-dropdown"><button onClick={()=>go('home')}>{lang==='id'?'Tanggung Jawab & Dampak':'Responsibility & Impact'}<small>{lang==='id'?'Komitmen pada layanan yang bertanggung jawab':'Responsible service commitments'}</small></button><button onClick={()=>go('home')}>{lang==='id'?'Inovasi & Pengembangan':'Innovation & Development'}<small>{lang==='id'?'Pengembangan solusi dan layanan':'Solutions and service development'}</small></button></div>}</div>
    <div className={'nav-group '+(openNav==='investor'?'expanded':'')}><button className="nav-group-trigger" onClick={()=>setOpenNav(openNav==='investor'?'':'investor')}>{lang==='id'?'Hubungan Investor':'Investor Relations'}<ChevronRight size={14}/></button>{openNav==='investor'&&<div className="nav-dropdown"><button onClick={()=>go('about')}>{lang==='id'?'Profil & Tata Kelola':'Profile & Governance'}<small>{lang==='id'?'Informasi struktur dan arah perusahaan':'Company structure and direction'}</small></button><button onClick={()=>go('contact')}>{lang==='id'?'Kontak Perusahaan':'Corporate Contact'}<small>{lang==='id'?'Kanal komunikasi resmi':'Communication channels'}</small></button></div>}</div>
-   <div className={'nav-group '+(openNav==='publications'?'expanded':'')}><button className="nav-group-trigger" onClick={()=>setOpenNav(openNav==='publications'?'':'publications')}>{lang==='id'?'Publikasi':'Publications'}<ChevronRight size={14}/></button>{openNav==='publications'&&<div className="nav-dropdown"><button onClick={()=>go('projects')}>{lang==='id'?'Kabar & Karya':'News & Work'}<small>{lang==='id'?'Pembaruan dan karya terpilih':'Updates and selected work'}</small></button><button onClick={()=>go('home')}>{lang==='id'?'Galeri Dokumentasi':'Media Gallery'}<small>{lang==='id'?'Foto dan dokumentasi perjalanan':'Photos and journey documentation'}</small></button></div>}</div>
+   <div className={'nav-group '+(openNav==='publications'?'expanded':'')}><button className="nav-group-trigger" onClick={()=>setOpenNav(openNav==='publications'?'':'publications')}>{lang==='id'?'Publikasi':'Publications'}<ChevronRight size={14}/></button>{openNav==='publications'&&<div className="nav-dropdown"><button onClick={()=>go('projects')}>{lang==='id'?'Kabar & Karya':'News & Work'}<small>{lang==='id'?'Pembaruan dan karya terpilih':'Updates and selected work'}</small></button><button onClick={()=>go('gallery')}>{lang==='id'?'Galeri Foto':'Photo Gallery'}<small>{lang==='id'?'Koleksi foto kereta dan dokumentasi perjalanan':'Railway photography and journey documentation'}</small></button></div>}</div>
    <div className={'nav-group '+(openNav==='heritage'?'expanded':'')}><button className="nav-group-trigger" onClick={()=>setOpenNav(openNav==='heritage'?'':'heritage')}>{lang==='id'?'Sejarah':'Heritage'}<ChevronRight size={14}/></button>{openNav==='heritage'&&<div className="nav-dropdown"><button onClick={()=>go('about')}>{lang==='id'?'Latar Belakang':'Our Background'}<small>{lang==='id'?'Cerita dan prinsip perusahaan':'Company story and principles'}</small></button><button onClick={()=>go('home')}>{lang==='id'?'Perjalanan Kami':'Our Journey'}<small>{lang==='id'?'Tahapan pengembangan':'Development milestones'}</small></button></div>}</div>
    <div className={'nav-group '+(openNav==='publicinfo'?'expanded':'')}><button className="nav-group-trigger" onClick={()=>setOpenNav(openNav==='publicinfo'?'':'publicinfo')}>{lang==='id'?'Informasi Publik':'Public Information'}<ChevronRight size={14}/></button>{openNav==='publicinfo'&&<div className="nav-dropdown"><button onClick={()=>go('contact')}>{lang==='id'?'Pusat Bantuan':'Help Center'}<small>{lang==='id'?'Pertanyaan dan kontak':'Questions and contact'}</small></button><button onClick={()=>go('projects')}>{lang==='id'?'Dokumen & Layanan':'Documents & Services'}<small>{lang==='id'?'Daftar layanan yang tersedia':'Available service overview'}</small></button></div>}</div>
+   <button className={'nav-simple '+(page==='gallery'?'current':'')} onClick={()=>{go('gallery');setOpenNav('')}}>{lang==='id'?'Galeri Foto':'Photo Gallery'}</button>
    <button className={'nav-simple '+(page==='contact'?'current':'')} onClick={()=>{go('contact');setOpenNav('')}}>{lang==='id'?'Kontak':'Contact'}</button>
   </div>
   <div className="nav-tools"><button className="nav-search" aria-label="Browse projects" onClick={()=>go('projects')}>{React.createElement(I('Search'),{size:18})}</button><div className="language"><Languages size={15}/><select value={lang} onChange={e=>{setLang(e.target.value);setOpenNav('')}}><option value="id">ID</option><option value="en">EN</option><option value="zh">中文</option><option value="ja">日本語</option><option value="ar">عربي</option></select></div><button className="icon-btn" aria-label="Toggle theme" onClick={()=>setDark(!dark)}>{dark?<Sun size={17}/>:<Moon size={17}/>}</button><button className="menu-btn" aria-label="Open menu" onClick={()=>setMenu(!menu)}>{menu?<X/>:<Menu/>}</button></div>
  </nav>
- <div className="page-shell">{p?<ProjectPage p={p} t={t} go={go}/>:page==='home'?<Home t={t} go={go} lang={lang}/>:page==='about'?<About t={t}/>:page==='projects'?<Projects t={t} go={go} lang={lang}/>:page==='access'?<AccessDownloadPage t={t} go={go} lang={lang}/>:<Contact t={t} lang={lang}/>}</div>
+ <div className="page-shell">{p?<ProjectPage p={p} t={t} go={go}/>:page==='home'?<Home t={t} go={go} lang={lang}/>:page==='about'?<About t={t}/>:page==='projects'?<Projects t={t} go={go} lang={lang}/>:page==='access'?<AccessDownloadPage t={t} go={go} lang={lang}/>:page==='gallery'?<GalleryPage/>:<Contact t={t} lang={lang}/>}</div>
  <Footer t={t}/></div>
 }
 
@@ -156,6 +184,24 @@ function ProjectPage({p,t,go,lang}){const c=p.copy[lang];return <main className=
 
 function Contact({t,lang}){const g=G[lang]||G.id;const cards=[['whatsapp','WHATSAPP',t.whatsapp,WhatsApp,'https://wa.me/qr/SE3CE73LWRIZE1'],['instagram','INSTAGRAM',t.instagram,Instagram,'https://instagram.com/galuhardan_'],['email','EMAIL',t.email,Mail,'mailto:'],['github','GITHUB',t.github,Globe,'https://github.com/']];return <main className="inner-page liquid-page"><section className="contact-hero"><div className="liquid-orb orb-one"/><div className="liquid-orb orb-two"/><div className="container contact-hero-inner" data-reveal><span className="eyebrow">{t.contact}</span><h1>{t.contactTitle}</h1><p>{t.contactText}</p><div className="contact-status glass-pill"><i/> {g.contactStatus}</div></div></section><div className="container contact-cards">{cards.map(([cls,label,title,Icon,url])=><a className={'contact-card glass-panel-xl '+cls} href={url} target={url.startsWith('mailto')?'_self':'_blank'} rel="noreferrer" data-reveal key={label}><div className="contact-symbol"><Icon size={30}/></div><div><small>{label}</small><h2>{title}</h2><p>{label==='WHATSAPP'?'Open WhatsApp':label==='INSTAGRAM'?'Open Instagram':label==='EMAIL'?t.emailNote:'Open profile'} ↗</p></div><ArrowUpRight/></a>)}</div><div className="container contact-bottom"><div className="contact-art glass-panel-xl" data-reveal><div>GA<span>.</span></div><i/><i/><i/></div><div className="contact-copy glass-panel-xl" data-reveal><span className="eyebrow">{t.connect}</span><h2>{t.contactCta}</h2><p>{t.ctaText}</p><div className="contact-mini-grid"><span>Web · UI</span><span>Travel</span><span>Railway</span><span>Tourism</span></div></div></div></main>}
 
-function Footer({t}){return <footer><div className="container footer-inner"><div><strong>GALUH<span>.</span></strong><p>{t.footer}</p></div><div className="footer-right"><span>{t.rights}</span></div></div></footer>}
+
+function GalleryPage(){
+ const [filter,setFilter]=useState('Semua foto');
+ const [selected,setSelected]=useState(null);
+ const filters=['Semua foto','Kereta antarkota','KRL & Commuter','Panorama','Di dalam kereta'];
+ const visible=filter==='Semua foto'?PHOTO_GALLERY:PHOTO_GALLERY.filter(photo=>photo.category===filter);
+ useEffect(()=>{if(!selected)return;const onKey=e=>{if(e.key==='Escape')setSelected(null)};addEventListener('keydown',onKey);return()=>removeEventListener('keydown',onKey)},[selected]);
+ return <main className="inner-page photo-gallery-page">
+  <section className="gallery-page-hero"><div className="gallery-page-hero-image" style={{backgroundImage:`url(${photoBridgeJourney})`}}/><div className="gallery-page-hero-shade"/><div className="container gallery-page-hero-copy"><span className="eyebrow">GALERI FOTO</span><h1>Indonesia dalam bingkai perjalanan.</h1><p>Kumpulan potret kereta, stasiun, dan lanskap jalur rel yang menangkap beragam cerita perjalanan di Indonesia.</p><a className="gallery-hero-link" href="#photo-collection">Jelajahi galeri <ChevronRight size={17}/></a></div></section>
+  <section className="container gallery-page-content" id="photo-collection"><div className="gallery-page-heading"><div><span className="eyebrow">DOKUMENTASI VISUAL</span><h2>Galeri perjalanan kereta</h2></div><p>Setiap foto memiliki cerita dan sudut pandang tersendiri. Pilih kategori untuk menjelajahi koleksi.</p></div>
+   <div className="gallery-filter" aria-label="Filter galeri foto">{filters.map(item=><button key={item} className={filter===item?'active':''} onClick={()=>setFilter(item)}>{item}</button>)}</div>
+   <div className="credited-photo-grid">{visible.map(photo=><article className="credited-photo-card" key={photo.title}><button className="credited-photo-image" onClick={()=>setSelected(photo)} aria-label={'Lihat foto: '+photo.title}><img src={photo.src} alt={photo.title} loading="lazy"/><span className="photo-view-label">Lihat foto</span></button><div className="credited-photo-copy"><span className="photo-category">{photo.category}</span><h3>{photo.title}</h3><p>{photo.description}</p><div className="photo-credit-line"><span>Sumber foto: <strong>{CREDIT_NAME}</strong></span><a href={CREDIT_URL} target="_blank" rel="noreferrer">Instagram pemilik foto <ArrowUpRight size={14}/></a></div></div></article>)}</div>
+   <aside className="photo-author-panel"><div><span className="eyebrow">KREDIT FOTOGRAFI</span><h2>Apresiasi untuk pemilik foto</h2><p>Seluruh foto pada galeri ini dikreditkan kepada pemilik akun Instagram <strong>@aluqman_bj1</strong>. Hak cipta foto tetap berada pada pemiliknya. Kunjungi akun Instagram untuk melihat unggahan asli dan karya lainnya.</p></div><a href={CREDIT_URL} target="_blank" rel="noreferrer" className="photo-instagram-card"><span className="instagram-outline">IG</span><span><strong>@aluqman_bj1</strong><small>Lihat akun Instagram pemilik foto</small></span><ArrowUpRight size={20}/></a></aside>
+  </section>
+  {selected&&<div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={selected.title} onClick={()=>setSelected(null)}><button className="photo-lightbox-close" onClick={()=>setSelected(null)} aria-label="Tutup foto"><X size={25}/></button><div className="photo-lightbox-content" onClick={e=>e.stopPropagation()}><img src={selected.src} alt={selected.title}/><div><span>{selected.category}</span><h2>{selected.title}</h2><p>{selected.description}</p><a href={CREDIT_URL} target="_blank" rel="noreferrer">Foto oleh {CREDIT_NAME} <ArrowUpRight size={15}/></a></div></div></div>}
+ </main>
+}
+
+function Footer({t}){return <footer><div className="container footer-inner"><div><strong>PT GALUH ARDAN NUGRAHA <span>(PERSERO)</span></strong><p>{t.footer}</p></div><div className="footer-right"><span>{t.rights}</span></div></div></footer>}
 
 createRoot(document.getElementById('root')).render(<App/>);
