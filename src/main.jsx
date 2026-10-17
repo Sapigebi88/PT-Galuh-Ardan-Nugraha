@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import * as Lucide from 'lucide-react';
 import './styles.css';
-import CSVoiceWidget from './CSVoiceWidget.jsx';
+import CallCS from './CallCS.jsx';
 import kaiLogo from './gallery/kai-logo-hd.png';
 import accessLogo from './gallery/access-logo.png';
 
@@ -94,7 +94,7 @@ function App(){
   <div className="nav-tools"><button className="nav-search" aria-label="Browse projects" onClick={()=>go('projects')}>{React.createElement(I('Search'),{size:18})}</button><div className="language"><Languages size={15}/><select value={lang} onChange={e=>{setLang(e.target.value);setOpenNav('')}}><option value="id">ID</option><option value="en">EN</option><option value="zh">中文</option><option value="ja">日本語</option><option value="ar">عربي</option></select></div><button className="icon-btn" aria-label="Toggle theme" onClick={()=>setDark(!dark)}>{dark?<Sun size={17}/>:<Moon size={17}/>}</button><button className="menu-btn" aria-label="Open menu" onClick={()=>setMenu(!menu)}>{menu?<X/>:<Menu/>}</button></div>
  </nav>
  <div className="page-shell">{p?<ProjectPage p={p} t={t} go={go}/>:page==='home'?<Home t={t} go={go} lang={lang}/>:page==='about'?<About t={t}/>:page==='projects'?<Projects t={t} go={go} lang={lang}/>:page==='access'?<AccessDownloadPage t={t} go={go} lang={lang}/>:page==='gallery'?<GalleryPage/>:<Contact t={t} lang={lang} onOpenCS={()=>setCsOpen(true)}/>}</div>
- <CSVoiceWidget dark={dark} open={csOpen} setOpen={setCsOpen}/><Footer t={t}/>{pageLoading&&<div className="page-transition-overlay" role="status" aria-live="polite"><div className="transition-progress"><span/></div><div className="transition-label">Memuat halaman</div></div>}{!online&&<div className="offline-overlay" role="alertdialog" aria-modal="true" aria-labelledby="offline-title"><div className="offline-panel"><div className="offline-symbol"><Lucide.WifiOff size={34}/></div><h2 id="offline-title">Tidak Ada Koneksi Internet</h2><p>Harap periksa jaringan Anda untuk melanjutkan.</p><button onClick={()=>{if(navigator.onLine)setOnline(true);else window.location.reload()}}>Coba lagi</button></div></div>}</div>
+ <CallCS dark={dark} open={csOpen} setOpen={setCsOpen}/><Footer t={t}/>{pageLoading&&<div className="page-transition-overlay" role="status" aria-live="polite"><div className="transition-progress"><span/></div><div className="transition-label">Memuat halaman</div></div>}{!online&&<div className="offline-overlay" role="alertdialog" aria-modal="true" aria-labelledby="offline-title"><div className="offline-panel"><div className="offline-symbol"><Lucide.WifiOff size={34}/></div><h2 id="offline-title">Tidak Ada Koneksi Internet</h2><p>Harap periksa jaringan Anda untuk melanjutkan.</p><button onClick={()=>{if(navigator.onLine)setOnline(true);else window.location.reload()}}>Coba lagi</button></div></div>}</div>
 }
 
 function BrandMark({type}){
