@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import * as Lucide from 'lucide-react';
 import './styles.css';
+import CSVoiceWidget from './CSVoiceWidget.jsx';
 import kaiLogo from './gallery/kai-logo-hd.png';
 import accessLogo from './gallery/access-logo.png';
 
@@ -205,52 +206,6 @@ function GalleryPage(){
   </section>
   {selected&&<div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={selected.title} onClick={()=>setSelected(null)}><button className="photo-lightbox-close" onClick={()=>setSelected(null)} aria-label="Tutup foto"><X size={25}/></button><div className="photo-lightbox-content" onClick={e=>e.stopPropagation()}><img src={selected.src} alt={selected.title}/><div><span>{selected.category}</span><h2>{selected.title}</h2><p>{selected.description}</p><a href={CREDIT_URL} target="_blank" rel="noreferrer">Foto oleh {CREDIT_NAME} <ArrowUpRight size={15}/></a></div></div></div>}
  </main>
-}
-
-function CSVoiceWidget({dark,open,setOpen}){
- const [status,setStatus]=useState('idle'),[muted,setMuted]=useState(false),[elapsed,setElapsed]=useState(0),[message,setMessage]=useState('');
- const streamRef=React.useRef(null),peerRef=React.useRef(null),socketRef=React.useRef(null),timerRef=React.useRef(null),connectedAtRef=React.useRef(null);
- const IconPhone=I('Phone'),IconMic=I('Mic'),IconMicOff=I('MicOff'),IconHeadphones=I('Headphones'),IconX=I('X'),IconPhoneOff=I('PhoneOff');
- const formatTime=n=>`${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`;
- useEffect(()=>{if(status!=='connected')return;timerRef.current=window.setInterval(()=>{if(connectedAtRef.current)setElapsed(Math.floor((Date.now()-connectedAtRef.current)/1000))},1000);return()=>window.clearInterval(timerRef.current)},[status]);
- const cleanup=()=>{if(timerRef.current)window.clearInterval(timerRef.current);timerRef.current=null;try{socketRef.current?.close()}catch{}socketRef.current=null;try{peerRef.current?.close()}catch{}peerRef.current=null;streamRef.current?.getTracks().forEach(track=>track.stop());streamRef.current=null;connectedAtRef.current=null;setMuted(false)};
- useEffect(()=>()=>cleanup(),[]);
- const endCall=()=>{cleanup();setStatus('ended');setMessage('Panggilan telah ditutup.');};
- const startCall=async()=>{
-  setMessage('');setElapsed(0);setStatus('connecting');
-  const signalUrl=import.meta.env.VITE_CS_SIGNALING_URL;
-  if(!signalUrl){setStatus('ended');setMessage('Layanan panggilan CS belum terhubung ke server signaling');return;}
-  try{
-   const local=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true},video:false});streamRef.current=local;
-   const pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});peerRef.current=pc;local.getTracks().forEach(track=>pc.addTrack(track,local));
-   const socket=new WebSocket(signalUrl);socketRef.current=socket;
-   socket.onopen=()=>socket.send(JSON.stringify({type:'join',room:'pt-galuh-cs',role:'visitor'}));
-   socket.onmessage=async event=>{try{const data=JSON.parse(event.data);if(data.type==='answer'&&data.sdp){await pc.setRemoteDescription(new RTCSessionDescription(data.sdp));}else if(data.type==='offer'&&data.sdp){await pc.setRemoteDescription(new RTCSessionDescription(data.sdp));const answer=await pc.createAnswer();await pc.setLocalDescription(answer);socket.send(JSON.stringify({type:'answer',room:'pt-galuh-cs',sdp:pc.localDescription}));}else if(data.type==='ice-candidate'&&data.candidate){await pc.addIceCandidate(new RTCIceCandidate(data.candidate));}else if(data.type==='operator-joined'){const offer=await pc.createOffer();await pc.setLocalDescription(offer);socket.send(JSON.stringify({type:'offer',room:'pt-galuh-cs',sdp:pc.localDescription}));}}catch{setMessage('Terjadi masalah saat menyiapkan koneksi suara.');}};
-   pc.onicecandidate=event=>{if(event.candidate&&socket.readyState===WebSocket.OPEN)socket.send(JSON.stringify({type:'ice-candidate',room:'pt-galuh-cs',candidate:event.candidate}))};
-   pc.ontrack=event=>{let audio=document.getElementById('cs-remote-audio');if(audio){audio.srcObject=event.streams[0];audio.play().catch(()=>{});}};
-   pc.onconnectionstatechange=()=>{if(pc.connectionState==='connected'){setStatus('connected');connectedAtRef.current=Date.now();setMessage('Anda sudah terhubung dengan CS online.');}else if(['failed','disconnected','closed'].includes(pc.connectionState)&&status!=='ended'){setStatus('ended');setMessage('Koneksi panggilan terputus. Silakan coba lagi.');}};
-   socket.onerror=()=>setMessage('Tidak dapat mengakses server panggilan. Periksa konfigurasi layanan CS.');
-   socket.onclose=()=>{if(pc.connectionState!=='connected'){setStatus('ended');setMessage('Server signaling menutup koneksi. Coba lagi beberapa saat.');}};
-  }catch(err){cleanup();setStatus('ended');setMessage(err?.name==='NotAllowedError'?'Izin mikrofon ditolak. Izinkan akses mikrofon di browser untuk melanjutkan.':'Mikrofon tidak tersedia atau browser tidak mendukung panggilan suara.');}
- };
- const toggleMute=()=>{const next=!muted;streamRef.current?.getAudioTracks().forEach(track=>track.enabled=!next);setMuted(next)};
- return <>
-  <button className="cs-floating-button" onClick={()=>setOpen(true)} aria-label="Hubungi CS Online"><IconHeadphones size={20}/><span>Hubungi CS Online</span></button>
-  {open&&<div className="cs-call-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget){if(status==='connecting'||status==='connected')endCall();setOpen(false)}}}>
-   <section className="cs-call-modal" role="dialog" aria-modal="true" aria-labelledby="cs-call-title">
-    <button className="cs-modal-close" onClick={()=>{if(status==='connecting'||status==='connected')endCall();setOpen(false)}} aria-label="Tutup panel"><IconX size={20}/></button>
-    <div className="cs-call-brand"><span className="cs-call-brand-icon"><IconHeadphones size={26}/></span><span><small>PT GALUH ARDAN NUGRAHA (PERSERO)</small><strong id="cs-call-title">Customer Service Online</strong></span></div>
-    <div className="cs-call-visual"><span className={'cs-call-ring '+(status==='connecting'||status==='connected'?'active':'')}><IconPhone size={32}/></span></div>
-    <h2>{status==='connected'?'Terhubung':status==='connecting'?'Menghubungkan...':status==='ended'?'Panggilan Berakhir':'Hubungi CS Online'}</h2>
-    <p className="cs-call-subtitle">{status==='connected'?'Anda sedang berada dalam panggilan suara.':status==='connecting'?'Menyiapkan mikrofon dan mencari koneksi ke operator.':status==='ended'?'Sesi panggilan sudah selesai.':'Dapatkan bantuan langsung melalui panggilan suara dari browser.'}</p>
-    <div className="cs-call-status-line"><span className={'cs-status-dot '+status}/><span>{status==='connected'?'Terhubung':status==='connecting'?'Menghubungkan...':status==='ended'?'Panggilan Berakhir':'Siap melakukan panggilan'}</span><strong>{status==='connected'?formatTime(elapsed):' '}</strong></div>
-    {message&&<p className="cs-call-message" role="status">{message}</p>}
-    <audio id="cs-remote-audio" autoPlay/>
-    <div className="cs-call-controls">{status==='connected'&&<button className={'cs-control-button '+(muted?'muted':'')} onClick={toggleMute} aria-label={muted?'Aktifkan mikrofon':'Bisukan mikrofon'}>{muted?<IconMicOff size={21}/>:<IconMic size={21}/>}<span>{muted?'Unmute':'Mute'}</span></button>}{status==='connecting'||status==='connected'?<button className="cs-end-call" onClick={endCall}><IconPhoneOff size={20}/><span>Akhiri Panggilan</span></button>:<button className="cs-start-call" onClick={startCall}><IconPhone size={20}/><span>{status==='ended'?'Coba Panggil Lagi':'Mulai Panggilan'}</span></button>}</div>
-    <small className="cs-call-privacy">Panggilan memerlukan izin mikrofon dan koneksi internet yang stabil.</small>
-   </section>
-  </div>}
- </>
 }
 
 function Footer({t}){return <footer><div className="container footer-inner"><div><strong>PT GALUH ARDAN NUGRAHA <span>(PERSERO)</span></strong><p>{t.footer}</p></div><div className="footer-right"><span>{t.rights}</span></div></div></footer>}
