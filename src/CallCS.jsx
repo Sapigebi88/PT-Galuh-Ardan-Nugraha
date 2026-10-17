@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 const APP_ID = import.meta.env.VITE_AGORA_APP_ID?.trim() || '';
-const CHANNEL_NAME = 'cs-call-channel';
+const CHANNEL_NAME = 'cs-channel';
 
 export default function CallCS({ dark, open, setOpen }) {
   const [status, setStatus] = useState('idle');
