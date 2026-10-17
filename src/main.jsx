@@ -74,7 +74,7 @@ function App(){
  useEffect(()=>{const f=()=>setScrolled(scrollY>40);addEventListener('scroll',f,{passive:true});return()=>removeEventListener('scroll',f)},[]);
  useEffect(()=>{const move=e=>{document.documentElement.style.setProperty('--mx',`${e.clientX}px`);document.documentElement.style.setProperty('--my',`${e.clientY}px`)};addEventListener('pointermove',move,{passive:true});return()=>removeEventListener('pointermove',move)},[]);
  useEffect(()=>{document.documentElement.classList.toggle('dark',dark);document.documentElement.dir=lang==='ar'?'rtl':'ltr';scrollTo({top:0,behavior:'smooth'})},[page,lang,dark]);
- const go=p=>{setMenu(false);setOpenNav('');if(p===page){scrollTo({top:0,behavior:'smooth'});return;}setPageLoading(true);window.setTimeout(()=>{location.hash=p;setPage(p);scrollTo({top:0,behavior:'smooth'});setPageLoading(false)},420)}; const p=page.startsWith('project/')?projects.find(x=>x.id===page.split('/')[1]):null; useReveal(page+'-'+lang);
+ const go=p=>{setMenu(false);setOpenNav('');if(p===page){scrollTo({top:0,behavior:'smooth'});return;}setPageLoading(true);window.setTimeout(()=>{location.hash=p;setPage(p);scrollTo({top:0,behavior:'smooth'});setPageLoading(false)},2100)}; const p=page.startsWith('project/')?projects.find(x=>x.id===page.split('/')[1]):null; useReveal(page+'-'+lang);
  return <div className="app"><div className="grain"/>{welcomeOpen&&<div className="welcome-overlay" role="dialog" aria-modal="true"><div className="welcome-water water-a"/><div className="welcome-water water-b"/><div className="welcome-glow"/><div className="welcome-modal"><button className="welcome-close" aria-label="Close" onClick={()=>setWelcomeOpen(false)}><X/></button><div className="welcome-orb"><span>GA</span></div><span className="welcome-kicker">GALUH ARDAN NUGRAHA</span><h2>{t.welcomeModalTitle}</h2><p>{t.welcomeModalText}</p><div className="welcome-divider"/><div className="welcome-bottom"><span>{t.welcomeModalVersion}</span><button onClick={()=>setWelcomeOpen(false)}>{t.welcomeModalButton}<ArrowUpRight/></button></div></div></div>}<div className={'utility-bar '+(scrolled||page!=='home'?'utility-hidden':'')}><span>{lang==='id'?'Informasi perusahaan, layanan, dan pembaruan terbaru.':lang==='zh'?'公司信息、服务与最新动态。':lang==='ja'?'会社情報、サービス、最新情報。':lang==='ar'?'معلومات الشركة والخدمات وآخر التحديثات.':'Company information, services, and latest updates.'}</span><div><button onClick={()=>go('about')}>{lang==='id'?'Tentang perusahaan':'Company profile'}</button><button onClick={()=>go('contact')}>{lang==='id'?'Hubungi kami':'Contact us'}</button><button onClick={()=>go('contact')}>FAQ</button><span className="utility-language"><button onClick={()=>setLang(lang==='id'?'en':'id')}>ID | EN</button></span></div></div>
  <nav className={'nav kai-inspired-nav '+(scrolled||page!=='home'?'solid':'')}>
   <button className="brand" onClick={()=>go('home')} aria-label="Galuh home"><span className="brand-mark">GA</span><span className="brand-word">PT GALUH ARDAN NUGRAHA <small>(PERSERO)</small></span></button>
@@ -93,7 +93,7 @@ function App(){
   <div className="nav-tools"><button className="nav-search" aria-label="Browse projects" onClick={()=>go('projects')}>{React.createElement(I('Search'),{size:18})}</button><div className="language"><Languages size={15}/><select value={lang} onChange={e=>{setLang(e.target.value);setOpenNav('')}}><option value="id">ID</option><option value="en">EN</option><option value="zh">中文</option><option value="ja">日本語</option><option value="ar">عربي</option></select></div><button className="icon-btn" aria-label="Toggle theme" onClick={()=>setDark(!dark)}>{dark?<Sun size={17}/>:<Moon size={17}/>}</button><button className="menu-btn" aria-label="Open menu" onClick={()=>setMenu(!menu)}>{menu?<X/>:<Menu/>}</button></div>
  </nav>
  <div className="page-shell">{p?<ProjectPage p={p} t={t} go={go}/>:page==='home'?<Home t={t} go={go} lang={lang}/>:page==='about'?<About t={t}/>:page==='projects'?<Projects t={t} go={go} lang={lang}/>:page==='access'?<AccessDownloadPage t={t} go={go} lang={lang}/>:page==='gallery'?<GalleryPage/>:<Contact t={t} lang={lang}/>}</div>
- <Footer t={t}/>{pageLoading&&<div className="page-transition-overlay" role="status" aria-live="polite"><div className="transition-progress"><span/></div><div className="transition-label">Memuat halaman</div></div>}{!online&&<div className="offline-overlay" role="alertdialog" aria-modal="true" aria-labelledby="offline-title"><div className="offline-panel"><div className="offline-symbol"><Lucide.WifiOff size={34}/></div><h2 id="offline-title">Tidak Ada Koneksi Internet</h2><p>Harap periksa jaringan Anda untuk melanjutkan.</p><button onClick={()=>{if(navigator.onLine)setOnline(true);else window.location.reload()}}>Coba lagi</button></div></div>}</div>
+ <CSVoiceWidget dark={dark}/><Footer t={t}/>{pageLoading&&<div className="page-transition-overlay" role="status" aria-live="polite"><div className="transition-progress"><span/></div><div className="transition-label">Memuat halaman</div></div>}{!online&&<div className="offline-overlay" role="alertdialog" aria-modal="true" aria-labelledby="offline-title"><div className="offline-panel"><div className="offline-symbol"><Lucide.WifiOff size={34}/></div><h2 id="offline-title">Tidak Ada Koneksi Internet</h2><p>Harap periksa jaringan Anda untuk melanjutkan.</p><button onClick={()=>{if(navigator.onLine)setOnline(true);else window.location.reload()}}>Coba lagi</button></div></div>}</div>
 }
 
 function BrandMark({type}){
@@ -205,6 +205,52 @@ function GalleryPage(){
   </section>
   {selected&&<div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={selected.title} onClick={()=>setSelected(null)}><button className="photo-lightbox-close" onClick={()=>setSelected(null)} aria-label="Tutup foto"><X size={25}/></button><div className="photo-lightbox-content" onClick={e=>e.stopPropagation()}><img src={selected.src} alt={selected.title}/><div><span>{selected.category}</span><h2>{selected.title}</h2><p>{selected.description}</p><a href={CREDIT_URL} target="_blank" rel="noreferrer">Foto oleh {CREDIT_NAME} <ArrowUpRight size={15}/></a></div></div></div>}
  </main>
+}
+
+function CSVoiceWidget({dark}){
+ const [open,setOpen]=useState(false),[status,setStatus]=useState('idle'),[muted,setMuted]=useState(false),[elapsed,setElapsed]=useState(0),[message,setMessage]=useState('');
+ const streamRef=React.useRef(null),peerRef=React.useRef(null),socketRef=React.useRef(null),timerRef=React.useRef(null),connectedAtRef=React.useRef(null);
+ const IconPhone=I('Phone'),IconMic=I('Mic'),IconMicOff=I('MicOff'),IconHeadphones=I('Headphones'),IconX=I('X'),IconPhoneOff=I('PhoneOff');
+ const formatTime=n=>`${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`;
+ useEffect(()=>{if(status!=='connected')return;timerRef.current=window.setInterval(()=>{if(connectedAtRef.current)setElapsed(Math.floor((Date.now()-connectedAtRef.current)/1000))},1000);return()=>window.clearInterval(timerRef.current)},[status]);
+ const cleanup=()=>{if(timerRef.current)window.clearInterval(timerRef.current);timerRef.current=null;try{socketRef.current?.close()}catch{}socketRef.current=null;try{peerRef.current?.close()}catch{}peerRef.current=null;streamRef.current?.getTracks().forEach(track=>track.stop());streamRef.current=null;connectedAtRef.current=null;setMuted(false)};
+ useEffect(()=>()=>cleanup(),[]);
+ const endCall=()=>{cleanup();setStatus('ended');setMessage('Panggilan telah ditutup.');};
+ const startCall=async()=>{
+  setMessage('');setElapsed(0);setStatus('connecting');
+  const signalUrl=import.meta.env.VITE_CS_SIGNALING_URL;
+  if(!signalUrl){setStatus('ended');setMessage('Layanan panggilan belum dikonfigurasi. Tambahkan VITE_CS_SIGNALING_URL dan server signaling WebRTC untuk menghubungkan pengunjung dengan operator CS.');return;}
+  try{
+   const local=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true},video:false});streamRef.current=local;
+   const pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});peerRef.current=pc;local.getTracks().forEach(track=>pc.addTrack(track,local));
+   const socket=new WebSocket(signalUrl);socketRef.current=socket;
+   socket.onopen=()=>socket.send(JSON.stringify({type:'join',room:'pt-galuh-cs',role:'visitor'}));
+   socket.onmessage=async event=>{try{const data=JSON.parse(event.data);if(data.type==='answer'&&data.sdp){await pc.setRemoteDescription(new RTCSessionDescription(data.sdp));}else if(data.type==='offer'&&data.sdp){await pc.setRemoteDescription(new RTCSessionDescription(data.sdp));const answer=await pc.createAnswer();await pc.setLocalDescription(answer);socket.send(JSON.stringify({type:'answer',room:'pt-galuh-cs',sdp:pc.localDescription}));}else if(data.type==='ice-candidate'&&data.candidate){await pc.addIceCandidate(new RTCIceCandidate(data.candidate));}else if(data.type==='operator-joined'){const offer=await pc.createOffer();await pc.setLocalDescription(offer);socket.send(JSON.stringify({type:'offer',room:'pt-galuh-cs',sdp:pc.localDescription}));}}catch{setMessage('Terjadi masalah saat menyiapkan koneksi suara.');}};
+   pc.onicecandidate=event=>{if(event.candidate&&socket.readyState===WebSocket.OPEN)socket.send(JSON.stringify({type:'ice-candidate',room:'pt-galuh-cs',candidate:event.candidate}))};
+   pc.ontrack=event=>{let audio=document.getElementById('cs-remote-audio');if(audio){audio.srcObject=event.streams[0];audio.play().catch(()=>{});}};
+   pc.onconnectionstatechange=()=>{if(pc.connectionState==='connected'){setStatus('connected');connectedAtRef.current=Date.now();setMessage('Anda sudah terhubung dengan CS online.');}else if(['failed','disconnected','closed'].includes(pc.connectionState)&&status!=='ended'){setStatus('ended');setMessage('Koneksi panggilan terputus. Silakan coba lagi.');}};
+   socket.onerror=()=>setMessage('Tidak dapat mengakses server panggilan. Periksa konfigurasi layanan CS.');
+   socket.onclose=()=>{if(pc.connectionState!=='connected'){setStatus('ended');setMessage('Server signaling menutup koneksi. Coba lagi beberapa saat.');}};
+  }catch(err){cleanup();setStatus('ended');setMessage(err?.name==='NotAllowedError'?'Izin mikrofon ditolak. Izinkan akses mikrofon di browser untuk melanjutkan.':'Mikrofon tidak tersedia atau browser tidak mendukung panggilan suara.');}
+ };
+ const toggleMute=()=>{const next=!muted;streamRef.current?.getAudioTracks().forEach(track=>track.enabled=!next);setMuted(next)};
+ return <>
+  <button className="cs-floating-button" onClick={()=>setOpen(true)} aria-label="Hubungi CS Online"><IconHeadphones size={20}/><span>Hubungi CS Online</span></button>
+  {open&&<div className="cs-call-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget){if(status==='connecting'||status==='connected')endCall();setOpen(false)}}}>
+   <section className="cs-call-modal" role="dialog" aria-modal="true" aria-labelledby="cs-call-title">
+    <button className="cs-modal-close" onClick={()=>{if(status==='connecting'||status==='connected')endCall();setOpen(false)}} aria-label="Tutup panel"><IconX size={20}/></button>
+    <div className="cs-call-brand"><span className="cs-call-brand-icon"><IconHeadphones size={26}/></span><span><small>PT GALUH ARDAN NUGRAHA (PERSERO)</small><strong id="cs-call-title">Customer Service Online</strong></span></div>
+    <div className="cs-call-visual"><span className={'cs-call-ring '+(status==='connecting'||status==='connected'?'active':'')}><IconPhone size={32}/></span></div>
+    <h2>{status==='connected'?'Terhubung':status==='connecting'?'Menghubungkan...':status==='ended'?'Panggilan Berakhir':'Hubungi CS Online'}</h2>
+    <p className="cs-call-subtitle">{status==='connected'?'Anda sedang berada dalam panggilan suara.':status==='connecting'?'Menyiapkan mikrofon dan mencari koneksi ke operator.':status==='ended'?'Sesi panggilan sudah selesai.':'Dapatkan bantuan langsung melalui panggilan suara dari browser.'}</p>
+    <div className="cs-call-status-line"><span className={'cs-status-dot '+status}/><span>{status==='connected'?'Terhubung':status==='connecting'?'Menghubungkan...':status==='ended'?'Panggilan Berakhir':'Siap melakukan panggilan'}</span><strong>{status==='connected'?formatTime(elapsed):' '}</strong></div>
+    {message&&<p className="cs-call-message" role="status">{message}</p>}
+    <audio id="cs-remote-audio" autoPlay/>
+    <div className="cs-call-controls">{status==='connected'&&<button className={'cs-control-button '+(muted?'muted':'')} onClick={toggleMute} aria-label={muted?'Aktifkan mikrofon':'Bisukan mikrofon'}>{muted?<IconMicOff size={21}/>:<IconMic size={21}/>}<span>{muted?'Unmute':'Mute'}</span></button>}{status==='connecting'||status==='connected'?<button className="cs-end-call" onClick={endCall}><IconPhoneOff size={20}/><span>Akhiri Panggilan</span></button>:<button className="cs-start-call" onClick={startCall}><IconPhone size={20}/><span>{status==='ended'?'Coba Panggil Lagi':'Mulai Panggilan'}</span></button>}</div>
+    <small className="cs-call-privacy">Panggilan memerlukan izin mikrofon dan koneksi internet yang stabil.</small>
+   </section>
+  </div>}
+ </>
 }
 
 function Footer({t}){return <footer><div className="container footer-inner"><div><strong>PT GALUH ARDAN NUGRAHA <span>(PERSERO)</span></strong><p>{t.footer}</p></div><div className="footer-right"><span>{t.rights}</span></div></div></footer>}
