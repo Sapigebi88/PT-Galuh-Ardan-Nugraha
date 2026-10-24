@@ -181,8 +181,22 @@ export default function CallCS({ dark, open, setOpen }) {
         }
       });
 
-      // Token null: hanya jika project mengizinkan join tanpa token.
-      await client.join(APP_ID, CHANNEL_NAME, null, null);
+      // Token RTC dibuat di server Netlify; jangan simpan App Certificate di frontend.
+      const uid = Math.floor(Math.random() * 2_000_000_000) + 1;
+      const tokenResponse = await fetch('/.netlify/functions/agora-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ channel: CHANNEL_NAME, uid }),
+      });
+      const tokenData = await tokenResponse.json().catch(() => ({}));
+
+      if (!tokenResponse.ok || !tokenData.token) {
+        throw new Error(
+          tokenData.error || 'Token Agora gagal dibuat. Periksa konfigurasi Netlify.'
+        );
+      }
+
+      await client.join(APP_ID, CHANNEL_NAME, tokenData.token, uid);
 
       if (sessionRef.current !== session) {
         await client.leave();
@@ -226,7 +240,9 @@ export default function CallCS({ dark, open, setOpen }) {
           );
         } else {
           setMessage(
-            'Gagal bergabung ke Agora. Periksa App ID, keamanan project, koneksi, dan token.'
+            error?.message?.includes('Token Agora')
+              ? error.message
+              : 'Gagal bergabung ke Agora. Periksa App ID, konfigurasi token Netlify, dan koneksi.'
           );
         }
       }

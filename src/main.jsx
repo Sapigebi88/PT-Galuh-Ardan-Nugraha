@@ -16,6 +16,8 @@ import photoReflection from './gallery/aluqman/railway-reflection.jpg';
 import photoArgo from './gallery/aluqman/argo-wilis-panoramic.jpg';
 import photoBridge from './gallery/aluqman/bridge-landscape.jpg';
 import photoNusantara from './gallery/aluqman/nusantara-explorer.jpg';
+import customerPhotoOne from './gallery/customer/customer-photo-1.webp';
+import customerPhotoTwo from './gallery/customer/customer-photo-2.webp';
 
 const CREDIT_URL='https://www.instagram.com/aluqman_bj1/';
 const CREDIT_NAME='@aluqman_bj1';
@@ -29,7 +31,9 @@ const PHOTO_GALLERY=[
  {src:photoReflection,title:'Cerita di sepanjang rel',category:'Panorama',description:'Kereta dan lanskap dalam suasana yang tenang.'},
  {src:photoArgo,title:'Argo Wilis dan Panoramic',category:'Kereta antarkota',description:'Potret pertemuan dua rangkaian kereta kelas premium.'},
  {src:photoBridge,title:'Jembatan dan perjalanan',category:'Panorama',description:'Jembatan kereta yang menghubungkan lanskap dan perjalanan.'},
- {src:photoNusantara,title:'The Nusantara Explorer',category:'Kereta antarkota',description:'Rangkaian perjalanan dari Gambir menuju Bandung.'}
+ {src:photoNusantara,title:'The Nusantara Explorer',category:'Kereta antarkota',description:'Rangkaian perjalanan dari Gambir menuju Bandung.'},
+ {src:customerPhotoOne,title:'Foto pelanggan di dalam kereta',category:'Foto Pelanggan',description:'Momen pelanggan saat menikmati perjalanan kereta.'},
+ {src:customerPhotoTwo,title:'Foto pelanggan selama perjalanan',category:'Foto Pelanggan',description:'Potret pelanggan yang dibagikan untuk galeri perjalanan.'}
 ];
 
 
@@ -194,14 +198,25 @@ function Contact({t,lang,onOpenCS}){
 function GalleryPage(){
  const [filter,setFilter]=useState('Semua foto');
  const [selected,setSelected]=useState(null);
- const filters=['Semua foto','Kereta antarkota','KRL & Commuter','Panorama','Di dalam kereta'];
+ const filters=['Semua foto','Kereta antarkota','KRL & Commuter','Panorama','Di dalam kereta','Foto Pelanggan'];
  const visible=filter==='Semua foto'?PHOTO_GALLERY:PHOTO_GALLERY.filter(photo=>photo.category===filter);
  useEffect(()=>{if(!selected)return;const onKey=e=>{if(e.key==='Escape')setSelected(null)};addEventListener('keydown',onKey);return()=>removeEventListener('keydown',onKey)},[selected]);
  return <main className="inner-page photo-gallery-page">
   <section className="gallery-page-hero"><div className="gallery-page-hero-image" style={{backgroundImage:`url(${photoBridgeJourney})`}}/><div className="gallery-page-hero-shade"/><div className="container gallery-page-hero-copy"><span className="eyebrow">GALERI FOTO</span><h1>Indonesia dalam bingkai perjalanan.</h1><p>Kumpulan potret kereta, stasiun, dan lanskap jalur rel yang menangkap beragam cerita perjalanan di Indonesia.</p><a className="gallery-hero-link" href="#photo-collection">Jelajahi galeri <ChevronRight size={17}/></a></div></section>
   <section className="container gallery-page-content" id="photo-collection"><div className="gallery-page-heading"><div><span className="eyebrow">DOKUMENTASI VISUAL</span><h2>Galeri perjalanan kereta</h2></div><p>Setiap foto memiliki cerita dan sudut pandang tersendiri. Pilih kategori untuk menjelajahi koleksi.</p></div>
    <div className="gallery-filter" aria-label="Filter galeri foto">{filters.map(item=><button key={item} className={filter===item?'active':''} onClick={()=>setFilter(item)}>{item}</button>)}</div>
-   <div className="credited-photo-grid">{visible.map(photo=><article className="credited-photo-card" key={photo.title}><button className="credited-photo-image" onClick={()=>setSelected(photo)} aria-label={'Lihat foto: '+photo.title}><img src={photo.src} alt={photo.title} loading="lazy"/><span className="photo-view-label">Lihat foto</span></button><div className="credited-photo-copy"><span className="photo-category">{photo.category}</span><h3>{photo.title}</h3><p>{photo.description}</p><div className="photo-credit-line"><span>Sumber foto: <strong>{CREDIT_NAME}</strong></span><a href={CREDIT_URL} target="_blank" rel="noreferrer">Instagram pemilik foto <ArrowUpRight size={14}/></a></div></div></article>)}</div>
+   <div className="gallery-content-layout">
+    <div className="credited-photo-grid">{visible.map(photo=><article className="credited-photo-card" key={photo.title}><button className="credited-photo-image" onClick={()=>setSelected(photo)} aria-label={'Lihat foto: '+photo.title}><img src={photo.src} alt={photo.title} loading="lazy"/><span className="photo-view-label">Lihat foto</span></button><div className="credited-photo-copy"><span className="photo-category">{photo.category}</span><h3>{photo.title}</h3><p>{photo.description}</p><div className="photo-credit-line"><span>Sumber foto: <strong>{CREDIT_NAME}</strong></span><a href={CREDIT_URL} target="_blank" rel="noreferrer">Instagram pemilik foto <ArrowUpRight size={14}/></a></div></div></article>)}</div>
+    <aside className="customer-photo-panel">
+     <div className="customer-photo-heading"><span className="customer-camera-icon"><Lucide.Camera size={21}/></span><div><h2>Foto Pelanggan</h2><p>Momen perjalanan yang dibagikan pelanggan kami.</p></div></div>
+     <div className="customer-photo-pair">
+      <button type="button" onClick={()=>setSelected({src:customerPhotoOne,title:'Foto pelanggan di dalam kereta',category:'Foto Pelanggan',description:'Foto pelanggan yang dibagikan untuk galeri perjalanan.'})} aria-label="Lihat foto pelanggan pertama"><img src={customerPhotoOne} alt="Pelanggan berfoto di kursi kereta" loading="lazy"/></button>
+      <button type="button" onClick={()=>setSelected({src:customerPhotoTwo,title:'Foto pelanggan selama perjalanan',category:'Foto Pelanggan',description:'Foto pelanggan yang dibagikan untuk galeri perjalanan.'})} aria-label="Lihat foto pelanggan kedua"><img src={customerPhotoTwo} alt="Pelanggan berfoto selama perjalanan kereta" loading="lazy"/></button>
+     </div>
+     <p className="customer-photo-caption">Terima kasih sudah berbagi cerita perjalanan bersama kami.</p>
+     <div className="customer-photo-footer"><a href={CREDIT_URL} target="_blank" rel="noreferrer"><Lucide.Instagram size={17}/> {CREDIT_NAME}</a><a className="customer-instagram-button" href={CREDIT_URL} target="_blank" rel="noreferrer">Lihat di Instagram <ArrowUpRight size={15}/></a></div>
+    </aside>
+   </div>
    <aside className="photo-author-panel"><div><span className="eyebrow">KREDIT FOTOGRAFI</span><h2>Apresiasi untuk pemilik foto</h2><p>Seluruh foto pada galeri ini dikreditkan kepada pemilik akun Instagram <strong>@aluqman_bj1</strong>. Hak cipta foto tetap berada pada pemiliknya. Kunjungi akun Instagram untuk melihat unggahan asli dan karya lainnya.</p></div><a href={CREDIT_URL} target="_blank" rel="noreferrer" className="photo-instagram-card"><span className="instagram-outline">IG</span><span><strong>@aluqman_bj1</strong><small>Lihat akun Instagram pemilik foto</small></span><ArrowUpRight size={20}/></a></aside>
   </section>
   {selected&&<div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={selected.title} onClick={()=>setSelected(null)}><button className="photo-lightbox-close" onClick={()=>setSelected(null)} aria-label="Tutup foto"><X size={25}/></button><div className="photo-lightbox-content" onClick={e=>e.stopPropagation()}><img src={selected.src} alt={selected.title}/><div><span>{selected.category}</span><h2>{selected.title}</h2><p>{selected.description}</p><a href={CREDIT_URL} target="_blank" rel="noreferrer">Foto oleh {CREDIT_NAME} <ArrowUpRight size={15}/></a></div></div></div>}

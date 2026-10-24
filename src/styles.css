@@ -514,3 +514,25 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .cs-contact-card{width:100%;text-align:left;cursor:pointer;color:inherit;font:inherit;}
 .cs-contact-card:hover{transform:translateY(-3px)}
 @media(max-width:560px){.cs-floating-button{left:14px;right:auto;bottom:calc(14px + env(safe-area-inset-bottom, 0px));max-width:calc(100vw - 28px)}.cs-contact-card{min-height:94px}}
+
+
+/* Galeri foto pelanggan: panel samping mengikuti gaya website yang sudah ada */
+.gallery-content-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(285px,330px);align-items:start;gap:24px}
+.gallery-content-layout .credited-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.customer-photo-panel{position:sticky;top:100px;min-width:0;padding:22px;background:linear-gradient(145deg,#f7faff,#edf3fb);border:1px solid #dfe7f2;box-shadow:0 8px 28px rgba(26,43,72,.06);color:#1b3154}
+.customer-photo-heading{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px}
+.customer-camera-icon{flex:0 0 42px;width:42px;height:42px;display:grid;place-items:center;background:#dbe7f7;color:#203d70;border-radius:8px}
+.customer-photo-heading h2{font-size:22px;line-height:1.2;margin:1px 0 7px;color:#172a52}
+.customer-photo-heading p{font-size:13px;line-height:1.6;color:#64748b;margin:0}
+.customer-photo-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.customer-photo-pair button{padding:0;border:0;background:#dbe3ef;cursor:zoom-in;overflow:hidden;border-radius:7px}
+.customer-photo-pair img{display:block;width:100%;height:245px;object-fit:cover;object-position:center;transition:transform .25s}
+.customer-photo-pair button:hover img{transform:scale(1.035)}
+.customer-photo-caption{font-size:13px;line-height:1.6;color:#415574;margin:16px 0 13px}
+.customer-photo-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.customer-photo-footer a{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-size:12px;font-weight:700;color:#24487e}
+.customer-photo-footer .customer-instagram-button{background:#172f5b;color:#fff;padding:10px 12px;border-radius:22px}
+.customer-photo-footer .customer-instagram-button:hover{background:#254c87}
+@media(max-width:1050px){.gallery-content-layout{grid-template-columns:minmax(0,1fr) 290px}.gallery-content-layout .credited-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.customer-photo-pair img{height:205px}}
+@media(max-width:760px){.gallery-content-layout{grid-template-columns:1fr}.customer-photo-panel{position:static;grid-row:1}.gallery-content-layout .credited-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.customer-photo-pair img{height:clamp(180px,54vw,300px)}}
+@media(max-width:480px){.gallery-content-layout .credited-photo-grid{grid-template-columns:1fr}.customer-photo-panel{padding:17px}.customer-photo-footer{align-items:flex-start}.customer-photo-footer .customer-instagram-button{padding:9px 10px}}
