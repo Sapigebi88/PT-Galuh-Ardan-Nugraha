@@ -214,7 +214,7 @@ function GalleryPage(){
       <button type="button" onClick={()=>setSelected({src:customerPhotoTwo,title:'Foto pelanggan selama perjalanan',category:'Foto Pelanggan',description:'Foto pelanggan yang dibagikan untuk galeri perjalanan.'})} aria-label="Lihat foto pelanggan kedua"><img src={customerPhotoTwo} alt="Pelanggan berfoto selama perjalanan kereta" loading="lazy"/></button>
      </div>
      <p className="customer-photo-caption">Terima kasih sudah berbagi cerita perjalanan bersama kami.</p>
-     <div className="customer-photo-footer"><a href={CREDIT_URL} target="_blank" rel="noreferrer"><Lucide.Instagram size={17}/> {CREDIT_NAME}</a><a className="customer-instagram-button" href={CREDIT_URL} target="_blank" rel="noreferrer">Lihat di Instagram <ArrowUpRight size={15}/></a></div>
+     <div className="customer-photo-footer"><a href={CREDIT_URL} target="_blank" rel="noreferrer"><span className="instagram-outline" aria-hidden="true">IG</span> {CREDIT_NAME}</a><a className="customer-instagram-button" href={CREDIT_URL} target="_blank" rel="noreferrer">Lihat di Instagram <ArrowUpRight size={15}/></a></div>
     </aside>
    </div>
    <aside className="photo-author-panel"><div><span className="eyebrow">KREDIT FOTOGRAFI</span><h2>Apresiasi untuk pemilik foto</h2><p>Seluruh foto pada galeri ini dikreditkan kepada pemilik akun Instagram <strong>@aluqman_bj1</strong>. Hak cipta foto tetap berada pada pemiliknya. Kunjungi akun Instagram untuk melihat unggahan asli dan karya lainnya.</p></div><a href={CREDIT_URL} target="_blank" rel="noreferrer" className="photo-instagram-card"><span className="instagram-outline">IG</span><span><strong>@aluqman_bj1</strong><small>Lihat akun Instagram pemilik foto</small></span><ArrowUpRight size={20}/></a></aside>
